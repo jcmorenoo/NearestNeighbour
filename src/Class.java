@@ -1,4 +1,8 @@
-
+/**
+ * Represents a class which contains name, size of the plant
+ * @author julian
+ *
+ */
 public class Class {
 	private String name;
 	private double sepalLength;

@@ -1,4 +1,10 @@
 
+/**
+ * This class represents the result of the test.
+ * It contains the actual class of the plant and what the result was from the test.
+ * @author julian
+ *
+ */
 public class ClassResult {
 	private Class c;
 	private String result;

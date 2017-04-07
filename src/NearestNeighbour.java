@@ -17,6 +17,7 @@ import java.util.Set;
  *
  */
 public class NearestNeighbour {
+	//3 is the default number of closes classes we consider.
 	private final int k = 3;
 	
 	private List<Class> training;
@@ -82,7 +83,7 @@ public class NearestNeighbour {
 				c = new Class(sepalLength, sepalWidth, petalLength, petalWidth, name);
 				
 				// set minimum and maximum
-				
+				//this is used to have a range
 				if(this.minPetalLength > petalLength){
 					this.minPetalLength = petalLength;
 				}
@@ -127,8 +128,11 @@ public class NearestNeighbour {
 					Class c = null;
 					
 					String[] values = line.split("  ");
-
+					
+					//if the line has less than 5 values.
+					//this is the end of the file.. it has a line but nothing in it
 					if(values.length < 5){
+						
 						break;
 					}
 					double sepalLength = Double.parseDouble(values[0]);
@@ -152,6 +156,8 @@ public class NearestNeighbour {
 		}
 	}
 	
+	//runs the nearest neighbour test
+	//finds whatever classes are closest to the test
 	private void runNearestNeighbour(){
 		int i = 0;
 		while(i<this.test.size()){
@@ -165,6 +171,10 @@ public class NearestNeighbour {
 		double count = 0;
 		double total = 0;
 		double accuracy = 0;
+		double countK3 = 0;
+		double totalK3 = 0;
+		double accuracyK3 = 0;
+		System.out.println("K-1 Results: ");
 		for(ClassResult result : this.result){
 			count = count + 1;
 			if(result.isCorrect()){
@@ -174,22 +184,30 @@ public class NearestNeighbour {
 		}
 		
 		accuracy = total / count;
-		System.out.println("\nAccuracy when k = 1: " + accuracy + "\n====================================");
 		
-		count = 0;
-		total = 0;
-		accuracy = 0;
+		
+		countK3 = 0;
+		totalK3 = 0;
+		accuracyK3 = 0;
+		System.out.println("\nK-3 Results: ");
 		for(ClassResult result : this.resultK3){
-			count = count + 1;
+			countK3 = countK3 + 1;
 			if(result.isCorrect()){
-				total = total + 1;
+				totalK3 = totalK3 + 1;
 			}
 			System.out.println(result.toString());
 		}
-		accuracy = total / count;
-		System.out.println("\nAccuracy when k = 3: " + accuracy);
+		accuracyK3 = totalK3 / countK3;
+		
+		System.out.println("\nAccuracy when k = 1: " + accuracy);
+		System.out.println("\nAccuracy when k = 3: " + accuracyK3);
 	}
 	
+	/**
+	 * This method checks classes which are the closest to the test.
+	 * After the test, they are put into the fields.
+	 * @param val
+	 */
 	private void findNearest(Class val){
 		List<Classifier> classifiers = new ArrayList<Classifier>();
 		double petalLengthRange = this.maxPetalLength - this.minPetalLength;
@@ -239,6 +257,7 @@ public class NearestNeighbour {
 			count = count + 1;
 		}
 		
+		//select the one that has most count.
 		if(countVer > countSet && countVer > countVir){
 			this.resultK3.add(new ClassResult(val,"Iris-versicolor"));
 		}
@@ -266,16 +285,16 @@ public class NearestNeighbour {
 		if(args.length == 2){
 			String trainingSet = args[0];
 			String testSet = args[1];
-			training = new File("src/" + trainingSet);
-			test = new File("src/" + testSet);
+			training = new File( trainingSet);
+			test = new File( testSet);
 			new NearestNeighbour(training, test);
 			
 		}
 		else{
 			String trainingSet = "iris-training.txt"; 
 			String testSet = "iris-test.txt";
-			training = new File("src/" + trainingSet);
-			test = new File("src/" + testSet);
+			training = new File(  trainingSet);
+			test = new File( testSet);
 			new NearestNeighbour(training, test);
 		}
 		

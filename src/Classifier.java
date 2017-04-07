@@ -1,4 +1,8 @@
-
+/**
+ * Represents a classifier which has a euclidean distance to the test class.
+ * @author julian
+ *
+ */
 public class Classifier implements Comparable<Classifier> {
 	private Class name;
 	private double euclideanDistance;
